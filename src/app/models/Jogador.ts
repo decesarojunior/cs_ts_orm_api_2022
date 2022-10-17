@@ -1,6 +1,7 @@
-import {Entity, Column, PrimaryColumn, ManyToOne, JoinColumn} from 'typeorm';
+import {Entity, Column, PrimaryColumn, ManyToOne, ManyToMany, JoinColumn, JoinTable} from 'typeorm';
 
 import Endereco from '../models/Endereco';
+import Patente from '../models/Patente';
 
 @Entity('tb_jogador')
 class Jogador {
@@ -22,9 +23,19 @@ class Jogador {
     @Column('date', {default: () => 'CURRENT_TIMESTAMP'})
     data_cadastro: Date;
 
+    //associação (flecha)
     @ManyToOne(type => Endereco)
     @JoinColumn({name: "endereco_id", referencedColumnName: "id"})
     endereco: Endereco;   
+
+    //agregacao (losango não preenchido)
+    @ManyToMany(() => Patente)
+    @JoinTable({name : "tb_jogador_patente", 
+                joinColumn: {name: "jogador_nickname", 
+                             referencedColumnName: "nickname"}, 
+                inverseJoinColumn: {name: "patente_id", 
+                                    referencedColumnName: "id"}})
+    patentes: Patente[];
 
 }
 export default Jogador;
