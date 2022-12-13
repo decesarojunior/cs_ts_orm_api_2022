@@ -6,6 +6,8 @@ import Partida from '../models/Partida';
 @Entity('tb_round')
 export default class Round {
 
+    @PrimaryColumn()
+    numero: number;
 
     //associação.
     @ManyToOne(type => Partida)
